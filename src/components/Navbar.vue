@@ -1,12 +1,7 @@
 <template>
   <div id="nav">
     <b-nav pills>
-      <b-nav-item v-for="item in items" v-if="shouldBeDisplayed(item)" :to="item.path" :active="item.active" @click="handleClick(item)">{{ item.name }}</b-nav-item>
-      <!--<b-nav-item active to="/">Home</b-nav-item>-->
-      <!--<b-nav-item to="/register" v-if="!loggedIn">Register</b-nav-item>-->
-      <!--<b-nav-item to="/login" v-if="!loggedIn">Login</b-nav-item>-->
-      <!--<b-nav-item v-on:click="logout" v-if="loggedIn">Logout</b-nav-item>-->
-      <!--<b-nav-item to="/members" v-if="loggedIn">Members</b-nav-item>-->
+      <b-nav-item v-for="item in items" :key="item.path" v-if="shouldBeDisplayed(item)" :to="item.path" :active="item.active" @click="handleClick(item)">{{ item.name }}</b-nav-item>
     </b-nav>
   </div>
 </template>
@@ -36,29 +31,29 @@
             'active': false,
             'logState': false
           },{
-            'name': 'Logout',
-            'path': null,
-            'action': this.logout,
-            'active': false,
-            'logState': true,
-          },{
             'name': 'Members',
             'path': '/members',
             'action': null,
             'active': false,
             'logState': true
-          },
+          },{
+            'name': 'Logout',
+            'path': null,
+            'action': this.logout,
+            'active': false,
+            'logState': true,
+          }
         ]
       }
     },
     methods: {
       logout(){
         this.$axios.delete("members/signout").then(resp => {
-          this.$store.commit('setToken', false);
-          this.$store.commit('setMember', false);
+          this.$store.commit('setToken', null);
+          this.$store.commit('setMember', null);
         }).catch(err => {
-          this.$store.commit('setToken', false);
-          this.$store.commit('setMember', false);
+          this.$store.commit('setToken', null);
+          this.$store.commit('setMember', null);
         });
         this.$router.push('/');
       },

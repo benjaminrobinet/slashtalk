@@ -20,7 +20,7 @@
         let member = this.$store.getters.member;
         let token = this.$store.getters.token;
         if(member && token){
-          this.$axios.get('members/' + member.id + '/signedin').then(resp => {
+          this.$axios.get('members/' + member._id + '/signedin').then(resp => {
             this.$store.commit('setMember', resp.data);
           }).catch((err) => {
             this.$store.commit('setToken', null);
