@@ -14,13 +14,19 @@
         </div>
       </div>
     </div>
-    <b-modal v-model="showModal" hide-footer :id="member._id" :title="member.fullname">
+    <b-modal v-model="showModal" hide-footer :id="member._id" :title="member.fullname" class="member-info">
       <b-card>
         <b-card-text>
-          Some quick example text to build on the card title and make up the bulk of the card's content.
+          <div>
+            <font-awesome-icon icon="user" /> {{ member.fullname }} <span class="id">({{ member._id }})</span>
+          </div>
+          <div>
+            <font-awesome-icon icon="envelope" /> {{ member.email }}
+          </div>
         </b-card-text>
-
-        <b-button @click="showModal = !showModal" variant="primary">Close</b-button>
+        <div class="buttons">
+          <b-button @click="showModal = !showModal" variant="primary">Close</b-button>
+        </div>
       </b-card>
     </b-modal>
   </div>
@@ -66,6 +72,21 @@ export default {
       div + div{
         margin-left: 5px;
       }
+    }
+  }
+
+  .member-info{
+    span.id{
+      font-style: italic;
+      color: #6c6c6c;
+      font-size: 14px;
+    }
+
+    .buttons{
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-end;
+      align-items: center;
     }
   }
 </style>

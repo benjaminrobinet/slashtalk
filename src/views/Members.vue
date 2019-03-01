@@ -1,11 +1,13 @@
 <template>
-  <div class="members container">
-    <b-list-group>
-      <b-list-group-item v-for="member in members" :key="member._id">
-        <Member :member="member"/>
-      </b-list-group-item>
-    </b-list-group>
-  </div>
+  <b-container>
+    <div class="members">
+      <b-list-group>
+        <b-list-group-item v-for="member in members" :key="member._id">
+          <Member :member="member"/>
+        </b-list-group-item>
+      </b-list-group>
+    </div>
+  </b-container>
 </template>
 
 <script>
