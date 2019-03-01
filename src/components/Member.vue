@@ -1,17 +1,28 @@
 <template>
-  <div class="member">
-    <div class="content">
-      <div class="title">{{ member.fullname }}</div>
-      <small>{{ member.email }}</small>
-    </div>
-    <div class="buttons">
-      <div>
-        <b-button variant="primary">Show</b-button>
+  <div class="member-container">
+    <div class="member">
+      <div class="content">
+        <div class="title">{{ member.fullname }}</div>
+        <small>{{ member.email }}</small>
       </div>
-      <div v-if="member._id !== me._id">
-        <b-button variant="danger">Delete</b-button>
+      <div class="buttons">
+        <div>
+          <b-button variant="primary" @click="showModal = !showModal">Show</b-button>
+        </div>
+        <div v-if="member._id !== me._id">
+          <b-button variant="danger">Delete</b-button>
+        </div>
       </div>
     </div>
+    <b-modal v-model="showModal" hide-footer :id="member._id" :title="member.fullname">
+      <b-card>
+        <b-card-text>
+          Some quick example text to build on the card title and make up the bulk of the card's content.
+        </b-card-text>
+
+        <b-button @click="showModal = !showModal" variant="primary">Close</b-button>
+      </b-card>
+    </b-modal>
   </div>
 </template>
 
@@ -23,7 +34,8 @@ export default {
   },
   data(){
     return {
-      me: this.$store.getters.member
+      me: this.$store.getters.member,
+      showModal: false,
     }
   },
   mounted() {
