@@ -4,12 +4,12 @@
       <b-row>
         <div class="w-25">
           <b-nav vertical>
-            <b-nav-item class="create" @click="showCreateChannelModal = !showCreateChannelModal"><font-awesome-icon icon="plus"/> Create channel</b-nav-item>
-            <b-nav-item v-for="channel in channels" v-b-tooltip.right :title="channel.topic">{{ channel.label }}</b-nav-item>
+            <b-nav-item class="create" v-if="loggedIn" @click="showCreateChannelModal = !showCreateChannelModal"><font-awesome-icon icon="plus"/> Create channel</b-nav-item>
+            <b-nav-item v-for="channel in channels" :key="channel._id" @click="openChannel(channel)"><span class="channel-name" v-b-tooltip.right :title="channel.topic">{{ channel.label }}</span></b-nav-item>
           </b-nav>
         </div>
         <div class="content w-75">
-          test
+          <Channel :channel="currentChannel"/>
         </div>
       </b-row>
     </b-container>
@@ -41,9 +41,12 @@
 
 <script>
 
+import Channel from "../components/Channel";
+
 export default {
   name: 'home',
   components: {
+    Channel
   },
   data(){
     return {
@@ -52,7 +55,8 @@ export default {
       form: {
         label: '',
         topic: ''
-      }
+      },
+      currentChannel: null,
     }
   },
   mounted(){
@@ -77,6 +81,14 @@ export default {
       }).catch(err => {
         console.error(err);
       })
+    },
+    openChannel(channel){
+      this.currentChannel = channel;
+    }
+  },
+  computed:{
+    loggedIn(){
+      return this.$store.getters.member !== null
     }
   }
 }
@@ -88,6 +100,9 @@ export default {
       a{
         font-weight: bold;
       }
+    }
+    .channel-name{
+      padding-right: 10px;
     }
   }
 </style>

@@ -17,8 +17,9 @@ import 'bootstrap-vue/dist/bootstrap-vue.css'
 
 Vue.use(storageManager);
 
+
 Vue.prototype.$axios = axios.create({ baseURL: 'http://coop.api.netlor.fr/api', params : {
-    token : store.state.token
+    token : store.getters.token
   }, headers: {
     Authorization: 'Token token=f2c5d1bd9d7a4a70a23e4650245df658'
   }});
