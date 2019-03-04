@@ -73,6 +73,9 @@ export default {
     getChannels(){
       this.$axios.get('channels').then(resp => {
         this.channels = resp.data;
+        if(this.currentChannel === null){
+          this.currentChannel = this.channels[0];
+        }
       }).catch(err => {
         console.error(err);
       });
