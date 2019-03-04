@@ -9,11 +9,12 @@ import axios from "axios";
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { fas } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-
-
+import * as vueMoment from 'vue-moment'
 
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
+
+Vue.use(vueMoment);
 
 Vue.use(storageManager);
 

@@ -98,6 +98,12 @@
 
 <style scoped lang="scss">
   #nav{
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 10;
+    position: fixed;
     padding: 20px;
+    background-color: #fff;
   }
 </style>

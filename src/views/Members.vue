@@ -18,13 +18,16 @@ export default {
   components: {Member},
   data(){
     return {
-      members: []
+    }
+  },
+  computed: {
+    members(){
+      return this.$store.getters.members
     }
   },
   mounted(){
     this.$axios.get('members').then(resp => {
-      this.members = resp.data;
-      // console.log(resp);
+      this.$store.commit('setMembers', resp.data);
     }).catch(err => {
       console.error(err);
     });

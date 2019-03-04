@@ -1,7 +1,9 @@
 <template>
   <div id="app" v-if="online">
     <Navbar/>
-    <router-view/>
+    <div class="router-content">
+      <router-view/>
+    </div>
   </div>
 </template>
 
@@ -70,8 +72,7 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
-
-  #nav{
-    padding: 25px;
+  .router-content{
+    padding-top: 80px;
   }
 </style>

@@ -7,6 +7,7 @@ export default new Vuex.Store({
   state: {
     token: null,
     member: null,
+    members: null,
   },
   mutations: {
     setToken(state, token){
@@ -14,6 +15,9 @@ export default new Vuex.Store({
     },
     setMember(state, member){
       state.member = member;
+    },
+    setMembers(state, members){
+      state.members = members
     },
     initStorage(state){
       if(localStorage.getItem('storage')){
@@ -28,6 +32,9 @@ export default new Vuex.Store({
     },
     token: (state) => {
       return state.token;
+    },
+    members: (state) => {
+      return state.members;
     }
   }
 })

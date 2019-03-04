@@ -1,11 +1,11 @@
 <template>
-  <div class="home">
+  <div class="home" v-if="loggedIn">
     <b-container fluid>
       <b-row>
         <div class="w-25 topic-nav">
           <b-nav vertical>
             <b-nav-item class="create" v-if="loggedIn" @click="showCreateChannelModal = !showCreateChannelModal"><font-awesome-icon icon="plus"/> Create channel</b-nav-item>
-            <b-nav-item v-for="channel in channels" :key="channel._id" @click="openChannel(channel)"><span class="channel-name" v-b-tooltip.right :title="channel.topic">{{ channel.label }}</span></b-nav-item>
+            <b-nav-item v-for="channel in channels" :key="channel._id" :class="{active : channel === currentChannel}" @click="openChannel(channel)"><span class="channel-name" v-b-tooltip.right :title="channel.topic">{{ channel.label }}</span></b-nav-item>
           </b-nav>
         </div>
         <div class="content w-75">
@@ -37,6 +37,11 @@
       </b-form>
     </b-modal>
   </div>
+  <div v-else>
+    <b-container>
+      You have to be logged in to access this page.
+    </b-container>
+  </div>
 </template>
 
 <script>
@@ -60,7 +65,9 @@ export default {
     }
   },
   mounted(){
-    this.getChannels();
+    if(this.loggedIn){
+      this.getChannels();
+    }
   },
   methods:{
     getChannels(){
@@ -98,6 +105,10 @@ export default {
   .home{
     .topic-nav{
       padding-bottom: 50px;
+
+      .active{
+        font-weight: bold;
+      }
     }
     .create{
       a{
