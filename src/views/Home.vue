@@ -2,14 +2,14 @@
   <div class="home">
     <b-container fluid>
       <b-row>
-        <div class="w-25">
+        <div class="w-25 topic-nav">
           <b-nav vertical>
             <b-nav-item class="create" v-if="loggedIn" @click="showCreateChannelModal = !showCreateChannelModal"><font-awesome-icon icon="plus"/> Create channel</b-nav-item>
             <b-nav-item v-for="channel in channels" :key="channel._id" @click="openChannel(channel)"><span class="channel-name" v-b-tooltip.right :title="channel.topic">{{ channel.label }}</span></b-nav-item>
           </b-nav>
         </div>
         <div class="content w-75">
-          <Channel :channel="currentChannel"/>
+          <Channel v-if="currentChannel !== null" :channel="currentChannel"/>
         </div>
       </b-row>
     </b-container>
@@ -96,6 +96,9 @@ export default {
 
 <style scoped lang="scss">
   .home{
+    .topic-nav{
+      padding-bottom: 50px;
+    }
     .create{
       a{
         font-weight: bold;
