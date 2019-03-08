@@ -2,13 +2,28 @@
   <div class="content-wrapper">
     <div class="channel">
       <ul>
-        <b-media tag="li" v-for="msg in orderedMessages" :key="msg._id" class="mb-1">
+        <b-media tag="li" v-for="msg in orderedMessages" :key="msg._id">
           <b-img slot="aside" blank blank-color="#e2e2e2" width="64" alt="placeholder" />
 
-          <h5 class="mt-0 mb-1">{{ getMemberById(msg.member_id).fullname }} <small>{{ msg.updated_at | moment("calendar") }}</small> </h5>
-          <p class="mb-0">
-            {{ msg.message }}
-          </p>
+          <div>
+            <h5 class="mt-0 mb-1">{{ getMemberById(msg.member_id).fullname }} <small>{{ msg.updated_at | moment("calendar") }}</small> </h5>
+            <div v-if="editing === msg">
+              <b-form inline @submit.prevent="saveMessage(msg)">
+                <label class="sr-only" for="message_edit">Message Edit</label>
+                <b-input class="mb-2 mr-sm-2 mb-sm-0" id="message_edit" v-model="msg.message" :value="msg.message" />
+                <b-button variant="primary" @click="saveMessage(msg)">Save</b-button>
+              </b-form>
+            </div>
+            <div v-else>
+              <p class="mb-0">
+                {{ msg.message }}
+              </p>
+            </div>
+          </div>
+          <div class="actions d-flex justify-content-end flex-nowrap ">
+            <div class="edit" @click="toggleEdit(msg)"><font-awesome-icon icon="edit"/></div>
+            <div class="delete" @click="removeMessage(msg)"><font-awesome-icon icon="times"/></div>
+          </div>
         </b-media>
         <!--<li v-for="msg in channel_messages">{{ msg.message }}</li>-->
       </ul>
@@ -36,7 +51,8 @@
     data(){
       return {
         message: '',
-        channel_messages: []
+        channel_messages: [],
+        editing: null
       }
     },
     mounted(){
@@ -89,6 +105,25 @@
         return this.$store.getters.members.find(m => {
           return m._id === member_id;
         });
+      },
+      toggleEdit(message){
+        this.editing = message;
+      },
+      removeMessage(message){
+        this.$axios.delete('channels/' + this.channel._id + '/posts/' + message._id, message).then(resp => {
+          let _messageIndex = this.orderedMessages.findIndex(obj => obj._id === message._id);
+          console.log(_messageIndex);
+          this.channel_messages.splice(_messageIndex, 1);
+        }).catch(err => {
+          console.error(err);
+        });
+      },
+      saveMessage(message){
+        this.$axios.put('channels/' + this.channel._id + '/posts/' + message._id, message).then(resp => {
+          this.editing = null;
+        }).catch(err => {
+          console.error(err);
+        });
       }
     }
   }
@@ -106,9 +141,45 @@
       ul{
         margin: 0;
 
+        li{
+          transition: background-color 0.05s linear;
+          padding-top: 5px;
+          padding-left: 5px;
+        }
+
+        li:hover{
+          background-color: rgba(203, 203, 203, 0.1);
+        }
+
         small{
           color: #b5b5b5;
           font-size: 12px;
+        }
+
+        .actions{
+          margin-top: 10px;
+          margin-right: 20px;
+          > div {
+            cursor: pointer;
+
+            + div {
+              margin-left: 10px;
+            }
+
+            &:hover{
+              svg, i{
+                fill: #b5b5b5;
+                color: #b5b5b5;
+              }
+            }
+
+            svg, i{
+              transition: all 0.1s linear;
+              width: 16px;
+              height: 16px;
+            }
+
+          }
         }
       }
     }
