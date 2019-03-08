@@ -100,7 +100,7 @@ export default {
       }});
     },
     deleteMember(member){
-      this.$axios.delete('members');
+      // this.$axios.delete('members');
     }
   }
 }
