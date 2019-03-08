@@ -100,7 +100,12 @@ export default {
       }});
     },
     deleteMember(member){
-      // this.$axios.delete('members');
+      this.$axios.delete('members/' + member._id).then(resp => {
+        let memberIndex = this.$store.state.members.findIndex(m => m._id === member._id);
+        this.$store.state.members.splice(memberIndex, 1);
+      }).catch(err => {
+        console.error(err);
+      });
     }
   }
 }
