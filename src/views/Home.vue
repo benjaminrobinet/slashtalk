@@ -9,7 +9,7 @@
           </b-nav>
         </div>
         <div class="content w-75">
-          <Channel v-if="currentChannel !== null" :channel="currentChannel"/>
+          <Channel v-if="currentChannel !== null" :channel="currentChannel" :focusedMessageId="focusedMessageId" />
         </div>
       </b-row>
     </b-container>
@@ -53,6 +53,7 @@ export default {
   components: {
     Channel
   },
+  props: ['channelId', 'focusedMessageId'],
   data(){
     return {
       channels: [],
@@ -74,7 +75,11 @@ export default {
       this.$axios.get('channels').then(resp => {
         this.channels = resp.data;
         if(this.currentChannel === null){
-          this.currentChannel = this.channels[0];
+          if(this.channelId){
+            this.currentChannel = this.channels.find(c => c._id === this.channelId);
+          } else {
+            this.currentChannel = this.channels[0];
+          }
         }
       }).catch(err => {
         console.error(err);

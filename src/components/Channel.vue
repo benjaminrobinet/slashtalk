@@ -2,7 +2,7 @@
   <div class="content-wrapper">
     <div class="channel">
       <ul>
-        <b-media tag="li" v-for="msg in orderedMessages" :key="msg._id">
+        <b-media tag="li" :class="{focused : msg === focused_message}" v-for="msg in orderedMessages" :key="msg._id">
           <b-img slot="aside" blank blank-color="#e2e2e2" width="64" alt="placeholder" />
 
           <div>
@@ -46,13 +46,15 @@
   export default {
     name: "Channel",
     props: {
-      'channel': Object
+      'channel': Object,
+      'focusedMessageId': String,
     },
     data(){
       return {
         message: '',
         channel_messages: [],
-        editing: null
+        editing: null,
+        focused_message: null,
       }
     },
     mounted(){
@@ -77,6 +79,9 @@
       getMessages(){
         this.$axios.get('channels/' + this.channel._id + '/posts').then(resp => {
           this.channel_messages = resp.data;
+          if(this.focusedMessageId !== null){
+            this.focused_message = this.channel_messages.find(m => m._id === this.focusedMessageId);
+          }
         }).catch(err => {
           console.error(err);
         });
@@ -145,6 +150,12 @@
           transition: background-color 0.05s linear;
           padding-top: 5px;
           padding-left: 5px;
+
+          &.focused{
+            animation: focus 1s ease-out;
+            animation-delay: 0.2s;
+            animation-fill-mode: forwards;
+          }
         }
 
         li:hover{
@@ -190,6 +201,15 @@
       left: 0;
       height: 50px;
       background-color: #cdcdcd;
+    }
+    @keyframes focus {
+      from {
+        background-color: #007bff;;
+      }
+
+      to{
+        background-color: rgba(0, 123, 255, 0.16);;
+      }
     }
   }
 

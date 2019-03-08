@@ -12,7 +12,8 @@ export default new Router({
     {
       path: '/',
       name: 'home',
-      component: Home
+      component: Home,
+      props: true
     },
     {
       path: '/register',
@@ -22,7 +23,8 @@ export default new Router({
     {
       path: '/login',
       name: 'login',
-      component: Login
+      component: Login,
+      props: true
     },
     {
       path: '/members',

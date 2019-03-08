@@ -1,5 +1,8 @@
 <template>
   <div id="login">
+    <b-alert fade show dismissible variant="success" v-if="registerSuccessful">
+      <div>You are now registered. You can login with your credentials here.</div>
+    </b-alert>
     <b-alert fade show dismissible @dismissed="alertsDismissed" v-if="alerts.length > 0">
       <div v-for="error in alerts">{{ error }}</div>
     </b-alert>
@@ -19,6 +22,7 @@
 <script>
   export default {
     name: "Login",
+    props: ['registerSuccessful'],
     data() {
       return {
         form: {
@@ -32,7 +36,7 @@
       login(){
         this.$axios.post('members/signin', this.form).then(resp => {
           this.$store.commit('setToken', resp.data.token);
-          this.$store.commit('setMember', {fullname: resp.data.fullname, id: resp.data._id, email: resp.data.email});
+          this.$store.commit('setMember', {fullname: resp.data.fullname, _id: resp.data._id, email: resp.data.email});
           this.$router.push('/');
         }).catch(err => {
           alert(err.response.data.error);
